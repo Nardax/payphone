@@ -7,10 +7,10 @@ authentic rotary dial works and the original bell physically rings on incoming c
 ![The payphone](./old-pay-phone.png)
 
 ## Docs
-- **[PLAN.md](./PLAN.md)** — full implementation plan (Option A, $0/month) with two build variants:
+- **[PLAN.md](./docs/PLAN.md)** — full implementation plan (Option A, $0/month) with two build variants:
   - **Version 1 — Smartphone brain** (spare Android + official Google Voice app; recommended).
   - **Version 2 — Raspberry Pi brain** (fully scriptable; unofficial GV bridge).
-- **[TASKS.md](./TASKS.md)** — checklist task tracker with dependencies and a decision log.
+- **[TASKS.md](./docs/TASKS.md)** — checklist task tracker with dependencies and a decision log.
 
 ## The idea in one line
 Google Voice won't give out SIP credentials, so instead of paying for a SIP line, a device that

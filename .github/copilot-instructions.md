@@ -9,13 +9,13 @@ do not invent tooling or CI. Work here means editing Markdown and keeping the pl
 
 ## The three documents and how they relate
 - **`README.md`** — one-page index/overview and the entry point. Keep it short.
-- **`PLAN.md`** — the authoritative design. It is structured as **Option A ($0/month)** with two
+- **`docs/PLAN.md`** — the authoritative design. It is structured as **Option A ($0/month)** with two
   mutually exclusive build variants:
   - **Version 1 — Smartphone brain** (spare Android running the official Google Voice app).
   - **Version 2 — Raspberry Pi brain** (unofficial Google Voice bridge/softphone).
   Content common to both lives in **"Shared concepts"**; version-specific content lives under each
   version's own section. Preserve this shared-vs-version split when editing.
-- **`TASKS.md`** — a checklist mirror of the plan: **Shared prep → choose a version → that
+- **`docs/TASKS.md`** — a checklist mirror of the plan: **Shared prep → choose a version → that
   version's track → Acceptance**, plus a **Decision log** table (IDs `D1`–`D6`).
 
 ## Core design constraints (do not violate when editing the plan)
@@ -33,16 +33,16 @@ These come directly from the project owner and shape every recommendation:
   GitHub. Do not use ASCII-art diagrams.
 - **All plans and docs live in the repository, never only in the session.** Any plan, task list,
   design note, or decision record must be written to a committed file in this repo (e.g.
-  `PLAN.md`, `TASKS.md`). Do not leave plans solely in the Copilot session folder or the session
+  `docs/PLAN.md`, `docs/TASKS.md`). Do not leave plans solely in the Copilot session folder or the session
   todo database — the session store may be used as a working mirror, but the repo files are the
   source of truth and must be created/updated so the work persists across sessions.
 - **Keep the three docs and the task IDs in sync.** Every task has a stable **kebab-case ID** (e.g.
-  `build-dial-reader`, `v1-dial-automation`, `v2-pi-bridge`). The same IDs appear in `PLAN.md`'s
-  todo list, in `TASKS.md`, and in the Copilot session todo database. When you add, rename, or
+  `build-dial-reader`, `v1-dial-automation`, `v2-pi-bridge`). The same IDs appear in `docs/PLAN.md`'s
+  todo list, in `docs/TASKS.md`, and in the Copilot session todo database. When you add, rename, or
   reorder a task, update all places and its **dependency links** (`→ depends-on`).
 - **Version prefixes:** shared tasks are unprefixed; Version 1 tasks start with `v1-`; Version 2
   tasks with `v2-`. Maintain this so the two tracks stay cleanly separable.
-- **Decisions are tracked by ID** (`D1`–`D6`) in the `TASKS.md` decision log. Reference decisions by
+- **Decisions are tracked by ID** (`D1`–`D6`) in the `docs/TASKS.md` decision log. Reference decisions by
   their ID in prose rather than restating the options; update the log when a decision is made.
 - **Safety callout is mandatory:** the bell ring circuit runs at **~90V AC** (shock hazard) and the
   microcontroller logic must stay isolated from it. Keep this warning present wherever ringing is
