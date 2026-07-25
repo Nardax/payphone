@@ -93,11 +93,29 @@ Reconnect with SSH after it reboots.
    arecord -d 3 test.wav && aplay test.wav   # record 3s, play it back
    ```
 
+### Routing audio to the USB headset (Bookworm / PipeWire)
+Current Raspberry Pi OS uses **PipeWire**; the easiest control panel is **`pavucontrol`**:
+```bash
+sudo apt install -y pavucontrol
+pavucontrol   # run from the VNC desktop
+```
+- **Output Devices** tab → click the check-mark to set the **USB headset as fallback (default)**.
+- **Input Devices** tab → set the **USB mic as fallback (default)**.
+- **Configuration** tab → if the headset has both mic + speaker, pick a **Duplex** profile.
+- **Playback** tab → while a call is live, you can move **Chromium's** audio stream onto the USB
+  device from here.
+- Sanity-check the devices are seen: `pw-cli ls Node` (or `aplay -l` / `arecord -l`).
+
 ## Step 8 — Google Voice bridge + test call (decision D3, spike gate)
 1. On the Pi desktop (over VNC), open **Chromium** and go to **https://voice.google.com**.
 2. Sign in to the Google account that owns your Voice number.
-3. When prompted, **allow microphone** access; confirm Chromium's audio in/out is the **USB
-   headset** (Chromium settings → Site settings → Microphone, and the Pi's audio settings).
+3. Point Chromium at the USB headset:
+   - **Microphone:** open `chrome://settings/content/microphone` and select the USB headset as the
+     default mic (Chromium exposes an input-device picker here).
+   - **Output:** Chromium follows the **system default sink**, so setting the USB headset as the
+     fallback in `pavucontrol` (Step 7) routes call audio to it. If it doesn't, use `pavucontrol`'s
+     **Playback** tab to drag Chromium's stream onto the headset while the call is ringing.
+   - When the site asks, **allow microphone** access for voice.google.com.
 4. **Outbound test:** click **Calls**, dial a number you can answer, and confirm clean two-way
    audio on the headset.
 5. **Inbound test:** call your Google Voice number from another phone and answer it in the
