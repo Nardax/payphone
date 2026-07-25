@@ -33,7 +33,8 @@ Pick one. Version 1 is more reliable (official app); Version 2 is more scriptabl
 > ✅ **Decision D1 — chosen: Version 2 (Raspberry Pi brain).** The owner accepts the unofficial
 > GV-bridge maintenance risk in exchange for tidier internal wiring, with all electronics fully
 > concealed inside the shell (authentic landline look/behavior). See **[HARDWARE.md](./HARDWARE.md)**
-> for the Version 2 bill of materials.
+> for the Version 2 bill of materials, and **[PI-SETUP.md](./PI-SETUP.md)** for the headless Pi
+> setup runbook (flash → SSH → VNC → audio → GV bridge → test call).
 
 ---
 

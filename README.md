@@ -12,6 +12,7 @@ authentic rotary dial works and the original bell physically rings on incoming c
   - **Version 2 — Raspberry Pi brain** (fully scriptable; unofficial GV bridge).
 - **[TASKS.md](./docs/TASKS.md)** — checklist task tracker with dependencies and a decision log.
 - **[HARDWARE.md](./docs/HARDWARE.md)** — Version 2 (Raspberry Pi) bill of materials / shopping list.
+- **[PI-SETUP.md](./docs/PI-SETUP.md)** — headless Pi 3B setup runbook → first Google Voice call.
 
 ## The idea in one line
 Google Voice won't give out SIP credentials, so instead of paying for a SIP line, a device that

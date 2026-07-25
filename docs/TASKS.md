@@ -7,7 +7,7 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 - [x] **choose-version** — Choosing the build version → _(none)_ ✅ **Chosen: V2 (Raspberry Pi).**
   Decide V1 (Android + official Google Voice app; reliable, some UI-automation glue) vs V2
   (Raspberry Pi + unofficial GV bridge; scriptable but may break). *Decision D1.*
-- [ ] **setup-gv** — Setting up the free Google Voice number → _(none)_
+- [x] **setup-gv** — Setting up the free Google Voice number → _(none)_ ✅ **Done (number exists).**
   Create/confirm a free Google Voice US number (free US/Canada calls + texts, $0/month).
 - [ ] **acquire-shared-hw** — Acquiring shared hardware → _(none)_
   ESP32, ~90V AC ring generator module + driver, opto-couplers, handset audio adapter, and bench
@@ -59,7 +59,7 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 |----|----------|---------|--------|
 | D1 | Build version | V1 smartphone / V2 Raspberry Pi | **V2 Raspberry Pi** |
 | D2 | Dial automation (V1) | Bluetooth-HID / ADB | _n/a (V1 not selected)_ |
-| D3 | GV bridge (V2) | Self-hosted connector / Asterisk + GV connector | Self-hosted connector _(pending spike validation)_ |
+| D3 | GV bridge (V2) | Self-hosted connector / Asterisk + GV connector | GV web app in Chromium (WebRTC) _(pending spike validation)_ |
 | D4 | Ring generator | Off-the-shelf ~90V module / salvaged generator | **Off-the-shelf ~90V module** |
 | D5 | Handset transmitter | Original carbon mic / electret + bias | **Electret + bias** |
 | D6 | Dial reader | ESP32 / direct Pi GPIO (V2) | **Direct Pi GPIO** _(ESP32 fallback)_ |
