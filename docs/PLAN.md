@@ -30,6 +30,11 @@ This document has **two build variants** of Option A:
 
 Pick one. Version 1 is more reliable (official app); Version 2 is more scriptable/self-contained.
 
+> ✅ **Decision D1 — chosen: Version 2 (Raspberry Pi brain).** The owner accepts the unofficial
+> GV-bridge maintenance risk in exchange for tidier internal wiring, with all electronics fully
+> concealed inside the shell (authentic landline look/behavior). See **[HARDWARE.md](./HARDWARE.md)**
+> for the Version 2 bill of materials.
+
 ---
 
 ## Shared concepts (apply to both versions)
@@ -188,8 +193,7 @@ flowchart TD
 ---
 
 ## Open decisions / risks
-- **D1 — Which version:** V1 smartphone (reliable, official app, some UI-automation glue) vs.
-  V2 Raspberry Pi (scriptable, but unofficial GV bridge that may break).
+- **D1 — Which version:** ✅ **Chosen: V2 Raspberry Pi** (scriptable; accepts unofficial GV bridge risk).
 - **D2 — Dial automation (V1):** Bluetooth-HID keyboard emulation vs. ADB scripting.
 - **D3 — GV bridge choice (V2):** self-hosted connector vs. Asterisk + GV connector.
 - **D4 — Ring generator:** off-the-shelf ~90V AC ring module vs. salvaged ring generator.

@@ -4,7 +4,7 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 (do those first). Structure: **Shared prep → choose a version → that version's track → acceptance.**
 
 ## Shared prep
-- [ ] **choose-version** — Choosing the build version → _(none)_
+- [x] **choose-version** — Choosing the build version → _(none)_ ✅ **Chosen: V2 (Raspberry Pi).**
   Decide V1 (Android + official Google Voice app; reliable, some UI-automation glue) vs V2
   (Raspberry Pi + unofficial GV bridge; scriptable but may break). *Decision D1.*
 - [ ] **setup-gv** — Setting up the free Google Voice number → _(none)_
@@ -25,6 +25,8 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
   capacitor. **SHOCK HAZARD — isolate logic.** *Decision D4.*
 
 ## Version 1 — Smartphone brain (recommended)
+> ⏭️ **Not selected** — D1 chose V2 (Raspberry Pi). This track is retained for reference only.
+
 - [ ] **v1-prep-phone** — Preparing the smartphone brain → choose-version, setup-gv
   Spare Android with Google Voice app, always-on Wi-Fi + charger.
 - [ ] **v1-audio** — Routing handset audio → rewire-signals, v1-prep-phone
@@ -55,9 +57,9 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 ## Decision log
 | ID | Decision | Options | Chosen |
 |----|----------|---------|--------|
-| D1 | Build version | V1 smartphone / V2 Raspberry Pi | _tbd_ |
-| D2 | Dial automation (V1) | Bluetooth-HID / ADB | _tbd_ |
-| D3 | GV bridge (V2) | Self-hosted connector / Asterisk + GV connector | _tbd_ |
-| D4 | Ring generator | Off-the-shelf ~90V module / salvaged generator | _tbd_ |
-| D5 | Handset transmitter | Original carbon mic / electret + bias | _tbd_ |
-| D6 | Dial reader | ESP32 / direct Pi GPIO (V2) | _tbd_ |
+| D1 | Build version | V1 smartphone / V2 Raspberry Pi | **V2 Raspberry Pi** |
+| D2 | Dial automation (V1) | Bluetooth-HID / ADB | _n/a (V1 not selected)_ |
+| D3 | GV bridge (V2) | Self-hosted connector / Asterisk + GV connector | Self-hosted connector _(pending spike validation)_ |
+| D4 | Ring generator | Off-the-shelf ~90V module / salvaged generator | **Off-the-shelf ~90V module** |
+| D5 | Handset transmitter | Original carbon mic / electret + bias | **Electret + bias** |
+| D6 | Dial reader | ESP32 / direct Pi GPIO (V2) | **Direct Pi GPIO** _(ESP32 fallback)_ |
