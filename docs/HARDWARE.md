@@ -65,6 +65,42 @@ the rest. A cheap USB headset for that spike is the only up-front purchase.
 | Spare handset cord | In case the original is brittle |
 | USB headset | **Buy first** — validates the GV bridge before any wiring |
 
+## Shopping checklist
+Buy in two phases so the risky GV bridge is proven before you spend on the rest.
+
+### Phase 1 — buy first (prove the GV bridge)
+- [ ] Raspberry Pi 4 (2GB)
+- [ ] USB-C power supply (5V/3A)
+- [ ] microSD card (32GB, A2/Class-10)
+- [ ] Pi case (low-profile)
+- [ ] USB headset (for the bridge spike)
+
+### Phase 2 — buy after the bridge spike passes
+**Handset audio (D5)**
+- [ ] USB audio adapter (mic + speaker)
+- [ ] Electret microphone capsule
+- [ ] Coupling/attenuation resistors + capacitors (earpiece matching)
+
+**Dial + hook sensing (D6)**
+- [ ] Opto-isolators (PC817 or similar) ×2–4
+- [ ] Assorted resistors (pull-ups, current-limit)
+- [ ] Perfboard / protoboard
+- [ ] Screw terminals / JST-Dupont connectors
+
+**Ring circuit — ⚠ ~90V AC (D4)**
+- [ ] Telephone ring-generator module (~90V AC 20Hz)
+- [ ] Driver relay or opto-driver + transistor
+- [ ] Flyback diode
+- [ ] Series ringer capacitor (tune the bell)
+
+**Wiring, mounting & tools**
+- [ ] Hookup wire + Dupont/JST leads
+- [ ] Ferrules + heat-shrink
+- [ ] Standoffs / mounting hardware
+- [ ] Multimeter
+- [ ] Soldering kit + wire strippers
+- [ ] Spare handset cord
+
 ## Related decisions
 See the [decision log](./TASKS.md#decision-log): **D1** V2 Raspberry Pi · **D3** self-hosted GV
 bridge (pending spike) · **D4** off-the-shelf ring module · **D5** electret + bias · **D6** direct
