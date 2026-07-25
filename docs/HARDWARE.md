@@ -25,8 +25,8 @@ the rest. A cheap USB headset for that spike is the only up-front purchase.
 ## 1. Brain (Raspberry Pi)
 | Item | Notes / suggested spec | Qty |
 |------|------------------------|-----|
-| Raspberry Pi (3B or newer) | A **Pi 3 Model B is sufficient** to run the GV bridge/softphone headless (SSH). Using one you already own = **$0**. | 1 |
-| Power supply | Match the board: **Pi 3B → micro-USB 5V/2.5A**; Pi 4 → USB-C 5V/3A | 1 |
+| Raspberry Pi (3B or newer) | A **Pi 3 Model B is sufficient** to run the GV bridge/softphone headless (SSH). Using one you already own = **$0**. If buying new, a **Pi 4 is the value pick** — a Pi 5 also works but costs more, needs a 5V/5A USB-C PD supply, and wants active cooling, with no benefit for this light workload. | 1 |
+| Power supply | Match the board: **Pi 3B → micro-USB 5V/2.5A**; Pi 4 → USB-C 5V/3A; Pi 5 → USB-C 5V/5A (27W) PD | 1 |
 | microSD card (32GB) | A2/Class-10; holds OS + bridge software | 1 |
 | Pi case | Low-profile so it hides inside the shell | 1 |
 
@@ -69,8 +69,8 @@ the rest. A cheap USB headset for that spike is the only up-front purchase.
 Buy in two phases so the risky GV bridge is proven before you spend on the rest.
 
 ### Phase 1 — buy first (prove the GV bridge)
-- [ ] Raspberry Pi (3B or newer — a **Pi 3 Model B works**; use one you own for $0)
-- [ ] Power supply to match (Pi 3B → micro-USB 5V/2.5A · Pi 4 → USB-C 5V/3A)
+- [ ] Raspberry Pi (3B or newer — a **Pi 3 Model B works**; use one you own for $0. Buying new? **Pi 4 is the value pick**; a Pi 5 works but costs/draws more for no gain here)
+- [ ] Power supply to match (Pi 3B → micro-USB 5V/2.5A · Pi 4 → USB-C 5V/3A · Pi 5 → USB-C 5V/5A PD)
 - [ ] microSD card (32GB, A2/Class-10)
 - [ ] Pi case (low-profile)
 - [ ] USB headset (for the bridge spike)
