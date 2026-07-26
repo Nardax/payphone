@@ -42,10 +42,38 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
   inbound + outbound. *Decision D3.*
 - [ ] **v2-audio** — Routing handset audio → rewire-signals, v2-pi-bridge
   Handset mic/earpiece via USB audio dongle; verify clean two-way audio.
-- [ ] **v2-dial-hook** — Wiring dial + hook to GPIO → rewire-signals, v2-pi-bridge
+- [ ] **v2-dial-hook** — Wiring dial + hook to GPIO → rewire-signals, v2-pi-bridge, sw-dialplan
   Rotary dial + hook to Pi GPIO (optionally via ESP32); script dial/answer/hang-up through the bridge.
-- [ ] **v2-incoming-bell** — Wiring incoming call to bell → v2-pi-bridge, wire-bell
+- [ ] **v2-incoming-bell** — Wiring incoming call to bell → v2-pi-bridge, wire-bell, sw-ring-cadence
   Bridge incoming-call event → Pi GPIO → fires ring generator → bell.
+
+## Software track (no payphone hardware required)
+> 💡 **Do this while parts ship.** None of these need the payphone, the ring generator, or any
+> purchase — only the Pi you already have working. They retire the project's biggest unknowns early.
+
+- [ ] **sw-call-control** — Scripting GV call control (place/answer/hang up) → v2-pi-bridge
+  ⚠️ **Highest-risk unknown — do this first.** Automate the Google Voice web app in Chromium: dial a
+  number, answer an inbound call, hang up, with no human clicking. Try Playwright/Puppeteer over CDP;
+  fall back to `xdotool` synthetic input. Deliverable: `gvcall dial <number> | answer | hangup`.
+  **If this can't be made to work, the V2 architecture is wrong — better to know before buying parts.**
+- [ ] **sw-incoming-detect** — Detecting inbound GV calls programmatically → v2-pi-bridge
+  Detect the ringing state of an inbound call (DOM mutation, notification, or CDP event) and emit a
+  consumable event. This is what will fire the bell. Test today by calling the GV number from a mobile.
+- [ ] **sw-dial-decoder** — Building + bench-testing the rotary pulse decoder → _(none)_
+  Write the 10-pps pulse decoder with debounce; unit-test against synthetic pulse trains (realistic
+  ~39/61 make/break ratio, contact bounce, 1–10 pulses where **10 = digit 0**). Then validate on real
+  silicon with a **GPIO loopback**: jumper one GPIO output to a GPIO input, emit pulses, decode them.
+  Proves timing and debounce with **no payphone and no purchase** beyond one jumper wire.
+- [ ] **sw-dialplan** — Implementing digit accumulation and dial plan → sw-dial-decoder, sw-call-control
+  Inter-digit timeout, end-of-number detection, 7- vs 10-digit, 1+ long distance, misdial handling.
+  Feeds the assembled number to `sw-call-control`. Pure logic, unit-testable.
+- [ ] **sw-ring-cadence** — Driving North American ring cadence on GPIO → sw-incoming-detect
+  Drive **2s on / 4s off** from a GPIO pin, triggered by inbound detection. Validate with an LED or by
+  logging the pin. This is the exact signal that will later gate the ring generator's **Inhibit** line,
+  so it can be finished and tested **before** the ⚠️ ~90V hardware exists.
+- [ ] **sw-autostart** — Making the Pi boot straight into a working phone → sw-call-control
+  systemd unit(s), auto-login + Chromium kiosk autostart, Wi-Fi auto-reconnect, and a watchdog that
+  restarts the stack if it dies. Verify it survives an unplug/replug with no keyboard attached.
 
 ## Acceptance
 - [ ] **acceptance-test** — Full acceptance test and documentation → acquire-shared-hw

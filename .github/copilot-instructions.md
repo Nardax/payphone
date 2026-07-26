@@ -49,3 +49,10 @@ These come directly from the project owner and shape every recommendation:
   discussed; never quietly drop it.
 - This is a decision-support/plan repo: when the owner asks technical questions, **explain tradeoffs
   and update the plan**, don't write production code.
+
+<!-- mermaid-ai-skills:start -->
+## Mermaid Diagrams
+
+When the user asks to create, edit, or visualize a diagram, follow the
+instructions in `.github/instructions/mermaid.instructions.md`.
+<!-- mermaid-ai-skills:end -->
