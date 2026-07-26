@@ -37,7 +37,7 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
   Hook switch → answer/hang-up in app; incoming-call detection (Tasker/MacroDroid/ADB) → ESP32 fires bell.
 
 ## Version 2 — Raspberry Pi brain
-- [ ] **v2-pi-bridge** — Setting up Pi + GV bridge → choose-version, setup-gv
+- [x] **v2-pi-bridge** — Setting up Pi + GV bridge → choose-version, setup-gv ✅ **Done — validated call on Pi 3B.**
   Pi + unofficial GV bridge/softphone (self-hosted connector, or Asterisk + GV connector); verify
   inbound + outbound. *Decision D3.*
 - [ ] **v2-audio** — Routing handset audio → rewire-signals, v2-pi-bridge
@@ -59,7 +59,7 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 |----|----------|---------|--------|
 | D1 | Build version | V1 smartphone / V2 Raspberry Pi | **V2 Raspberry Pi** |
 | D2 | Dial automation (V1) | Bluetooth-HID / ADB | _n/a (V1 not selected)_ |
-| D3 | GV bridge (V2) | Self-hosted connector / Asterisk + GV connector | GV web app in Chromium (WebRTC) _(pending spike validation)_ |
+| D3 | GV bridge (V2) | Self-hosted connector / Asterisk + GV connector | **GV web app in Chromium (WebRTC)** — ✅ validated on Pi 3B |
 | D4 | Ring generator | Off-the-shelf ~90V module / salvaged generator | **Off-the-shelf ~90V module** |
 | D5 | Handset transmitter | Original carbon mic / electret + bias | **Electret + bias** |
 | D6 | Dial reader | ESP32 / direct Pi GPIO (V2) | **Direct Pi GPIO** _(ESP32 fallback)_ |

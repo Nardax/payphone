@@ -146,4 +146,4 @@ pavucontrol   # run from the VNC desktop
 
 ## Related decisions
 See the [decision log](./TASKS.md#decision-log): **D3** GV bridge = Google Voice web app in
-Chromium (WebRTC) — *pending validation in Step 8*.
+Chromium (WebRTC) — ✅ **validated on a Pi 3B** (outbound call placed over Wi-Fi at $0/month).
