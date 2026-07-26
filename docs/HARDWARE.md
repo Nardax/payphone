@@ -1,5 +1,8 @@
 # Hardware — Bill of Materials (Version 2, Raspberry Pi brain)
 
+> 🛒 For concrete parts with **part numbers, prices, and links**, see
+> **[SHOPPING-LIST.md](./SHOPPING-LIST.md)**. This file is the higher-level BOM/rationale.
+
 Companion to [PLAN.md](./PLAN.md) and [TASKS.md](./TASKS.md). This is the parts list for the
 **Version 2 (Raspberry Pi)** build chosen in decision **D1**. All electronics mount **concealed
 inside the payphone shell** — the phone must look and behave like an authentic landline.
