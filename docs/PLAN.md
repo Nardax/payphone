@@ -49,6 +49,8 @@ Pick one. Version 1 is more reliable (official app); Version 2 is more scriptabl
    generated locally — treat as a shock hazard).
 
 ### Payphone teardown & rewiring (both versions)
+> 🔧 See **[WIRING.md](./WIRING.md)** for the step-by-step teardown/tracing procedure, the
+> internals→Pi signal map, and the handset-audio wiring — all with Mermaid diagrams.
 - The Automatic Electric 3-slot phone is wired for a coin/relay + operator system, not a plain
   circuit. Reverse-engineer the internal wiring and expose four things as clean signals:
   - **Handset** transmitter (carbon mic; may swap for an electret + bias network for clean audio)
