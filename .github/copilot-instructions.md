@@ -1,11 +1,23 @@
 # Copilot instructions for `pay-phone`
 
 ## What this repository is
-This is a **documentation / planning repository**, not a software project. It holds the design and
-task plan for a hardware build: converting a vintage **Automatic Electric 3-slot rotary payphone**
-into a working phone over **Wi-Fi + Google Voice** with **no landline, no cell/SIM line, and no
-monthly bills**. There is no application code, and therefore **no build, test, or lint commands** —
-do not invent tooling or CI. Work here means editing Markdown and keeping the plan coherent.
+This repository holds the design, task plan, **and control software** for a hardware build:
+converting a vintage **Automatic Electric 3-slot rotary payphone** into a working phone over
+**Wi-Fi + Google Voice** with **no landline, no cell/SIM line, and no monthly bills**.
+
+It began as a documentation-only repo and is now a build repo: planning docs live in `docs/`,
+and the Raspberry Pi control software lives in `src/payphone/` (importable modules), `tools/`
+(runnable CLIs), and `tests/` (unit tests).
+
+### Running the tests
+Pure-logic modules must stay free of GPIO/browser imports so they can be tested on any machine
+with **stdlib only — no pip installs**:
+
+```
+python -m unittest discover -s tests -v
+```
+
+Hardware- and browser-dependent code lives in `tools/` and is exercised on the Pi, not in CI.
 
 ## The three documents and how they relate
 - **`README.md`** — one-page index/overview and the entry point. Keep it short.
