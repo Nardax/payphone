@@ -98,7 +98,7 @@ risk against the ~$115 discrete build.
 | Bell / ring circuit | ~$60 (MRCS + 12V supply + caps); more if the ~90V booster is needed |
 | Wiring & mounting | ~$49 |
 | Tools (if none owned) | ~$75 |
-| **Total (new, incl. tools)** | **~$240** — or **~$115** in consumables if you already own the tools |
+| **Total (new, incl. tools)** | **~$238** — or **~$163** in consumables if you already own the tools |
 
 The Pi, card, and calling are **$0/month**; this is the one-time parts spend to make the physical
 payphone work. The single long-lead / big-ticket item is the **ring-generator module** — order it
