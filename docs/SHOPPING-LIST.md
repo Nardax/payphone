@@ -70,6 +70,26 @@ build. Grouped by subsystem, with a recommended part, approximate price, and a l
 
 ---
 
+## 6. Optional experiment — Cell2Jack shortcut test (decision D7)
+**Not part of the build.** D7 rejected analog Bluetooth gateways as the *primary* path, but the
+device is cheap enough to be worth a bounded test **if** you'd rather not build the discrete circuit.
+It only pays off if it passes both gates below — buy from a **returnable** source.
+
+| Item | Recommended part / MPN | ~Price | Link |
+|------|------------------------|--------|------|
+| Cell-to-landline BT gateway | **Cell2Jack** | ~$40 | [Amazon B089984QRT](https://www.amazon.com/Cell2jack-Cellphone-Adapter-Receive-landline/dp/B089984QRT) |
+| ↳ alt (documents pulse dialing + stronger ring) | **XLink BT HD** | ~$70 | [myxlink.com/bthd](https://myxlink.com/bthd) |
+
+Requires a **spare Android phone** as the brain (reverting D1 to V1) — the Pi cannot be the HFP
+source. See the `cell2jack-spike` task in [TASKS.md](./TASKS.md) for the two pass/fail gates.
+
+⚠️ Even if both gates pass, outbound dialing still needs
+[SouthJack](https://github.com/aarongress1/southjack) (an unproven, single-device proof of concept
+requiring a disabled lock screen) to route HFP dialing into Google Voice. Weigh that maintenance
+risk against the ~$115 discrete build.
+
+---
+
 ## Rough budget
 | Group | Approx. |
 |-------|---------|

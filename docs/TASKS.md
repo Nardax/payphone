@@ -53,6 +53,17 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
   handset. Document final build, wiring, and firmware/scripts.
 - [ ] **coin-gate** — _(optional)_ Coin-drop dial-tone gate → acceptance-test
   Wire the coin-drop switch so inserting a coin unlocks dial tone before dialing.
+- [ ] **cell2jack-spike** — _(optional, time-boxed)_ Cell2Jack shortcut test → _(none)_
+  Cheap bounded test of the D7 shortcut **before** ordering the ring generator. Buy a **returnable**
+  Cell2Jack (~$40) + use a spare Android with the Google Voice app. Two pass/fail gates:
+  1. **Pulse dialing** — does the payphone's rotary dial actually place a call? (Vendor never
+     documents 10-pps decode; their setup page says "select tone dialing".)
+  2. **Bell strike** — does the payphone's gong reliably ring on an inbound call, incl. `21#` strong
+     ring mode? (Ring voltage/REN unpublished; may need bias-spring adjustment.)
+
+  **If either gate fails → return it and continue the discrete build.** If both pass, outbound GV
+  dialing still needs [SouthJack](https://github.com/aarongress1/southjack) (unproven) and reverting
+  D1 to V1 (Android brain), abandoning the already-validated Pi path. *Decision D7.*
 
 ## Decision log
 | ID | Decision | Options | Chosen |
