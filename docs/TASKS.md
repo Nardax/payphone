@@ -63,3 +63,4 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 | D4 | Ring generator | Off-the-shelf ~90V module / salvaged generator | **Off-the-shelf ~90V module** |
 | D5 | Handset transmitter | Original carbon mic / electret + bias | **Electret + bias** |
 | D6 | Dial reader | ESP32 / direct Pi GPIO (V2) | **Direct Pi GPIO** _(ESP32 fallback)_ |
+| D7 | Analog BT gateway (Cell2Jack / XLink BT) | Use as all-in-one FXS gateway / discrete DIY build | **❌ Rejected — discrete DIY build** (HFP `ATD` dials the carrier, not Google Voice; fails SIM-less) |

@@ -36,6 +36,41 @@ Pick one. Version 1 is more reliable (official app); Version 2 is more scriptabl
 > for the Version 2 bill of materials, and **[PI-SETUP.md](./PI-SETUP.md)** for the headless Pi
 > setup runbook (flash → SSH → VNC → audio → GV bridge → test call).
 
+### Considered and rejected: analog Bluetooth gateways (Cell2Jack, XLink BT)
+A tempting shortcut is a **cell-to-landline Bluetooth gateway** such as **Cell2Jack** (~$40) or
+**XLink BT HD**. These pair to a phone over Bluetooth **Hands-Free Profile (HFP)** and present a
+standard RJ11 jack with dial tone and ring voltage — seemingly solving all four jobs at once, with
+no soldering and no DIY 90V circuit.
+
+**Why it doesn't work here — the dial path breaks.** HFP dialing sends an `ATD<number>;` command to
+the paired phone, which Android routes to its **native carrier dialer, not to the Google Voice app**.
+Google states plainly: *"To use Wi-Fi for a call, start the call from the Voice app."* On a SIM-less
+phone there is no carrier, so **lifting the handset and dialing simply fails**. Cell2Jack's own
+support pages concede that with third-party VoIP apps *"audio is ok but other function may not
+work,"* and that you *"may need to … dial from your cellphone and then pickup home phone to talk"* —
+useless for a payphone that must dial from its own rotary dial. Its "Hangout Helper" workaround
+targets Google Hangouts, **discontinued in 2022**.
+
+Three further unknowns, none of them resolved by the vendor's docs:
+- **Pulse decoding is not actually documented.** Marketing says "rotary," but the official setup page
+  tells users with a pulse/tone switch to *"select tone dialing"* — implying DTMF, not 10-pps decode.
+- **Ring power is unspecified.** No published voltage, waveform, or REN limit. It has a "strong ring"
+  mode (`21#`) and vendor guidance about adjusting the **bias spring** or adding an external ringer
+  amplifier — a payphone's heavy gong is a worst-case load.
+- **`ATD` routing can't be fixed by swapping gateways.** XLink BT HD documents pulse dialing and
+  stronger ringing, but it's still an HFP bridge with the same Android problem.
+
+> ⚠️ **Partial workaround exists but is not dependable.** [SouthJack](https://github.com/aarongress1/southjack)
+> is a root-free Android app that cancels the HFP-initiated carrier call and relaunches it into
+> Google Voice via `ACTION_CALL`. The approach is technically sound, but as of this writing it is a
+> **~2-week-old proof of concept: one commit, no release APK, zero stars/forks/issues, tested on a
+> single Samsung device**, and it requires disabling the phone's secure lock screen. It also cannot
+> help with pulse decoding — it only receives a number Android already parsed.
+
+**Verdict:** not a viable primary path for a $0/month SIM-less Google Voice build. It also would
+require reverting **D1** to V1 (Android brain), abandoning the Pi + Chromium path already validated
+with a real call. See **decision D7**.
+
 ---
 
 ## Shared concepts (apply to both versions)
@@ -202,6 +237,9 @@ flowchart TD
 - **D4 — Ring generator:** off-the-shelf ~90V AC ring module vs. salvaged ring generator.
 - **D5 — Handset transmitter:** keep original carbon mic vs. swap for electret + bias network.
 - **D6 — Dial reader:** ESP32 vs. (V2) direct Raspberry Pi GPIO.
+- **D7 — Analog Bluetooth gateway (Cell2Jack/XLink):** ❌ **Rejected as primary.** HFP `ATD` dialing
+  routes to the native carrier dialer, not Google Voice, so outbound dialing fails on a SIM-less
+  phone; pulse decoding and ring power are both undocumented. Optional cheap experiment only.
 
 ---
 
