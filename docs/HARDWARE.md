@@ -33,7 +33,7 @@ the rest. A cheap USB headset for that spike is the only up-front purchase.
 ## 2. Handset audio (D5 — electret swap)
 | Item | Notes | Qty |
 |------|-------|-----|
-| USB audio adapter (mic + speaker) | Provides clean sound card to Pi; supplies electret bias | 1 |
+| USB audio adapter (mic + speaker) | **Required** — the Pi 3B has no mic and its 3.5mm jack is output-only. Provides clean sound card to Pi; supplies electret bias | 1 |
 | Electret microphone capsule | Replaces the original carbon transmitter for clean audio | 1 |
 | Coupling/attenuation parts | Resistors + capacitors to match the earpiece receiver level | as needed |
 | (Optional) original carbon mic | Keep on hand as an authenticity fallback | — |

@@ -79,6 +79,11 @@ Reconnect with SSH after it reboots.
    (or the Pi's IP). You now see the Pi's desktop with no monitor attached.
 
 ## Step 7 — Verify USB audio
+> ⚠️ **A USB audio device is required.** The Pi 3B has **no microphone** and its 3.5mm jack is
+> **output-only (no analog mic input)**, so Google Voice (WebRTC) cannot place a call until a USB
+> audio device is attached. Use a **USB headset** (simplest) or a **USB audio adapter/sound card**
+> (mic-in + headphone-out) — the latter is the same part used later to wire the handset, so it's
+> not a throwaway purchase.
 1. Plug the USB headset/adapter into the Pi.
 2. List devices:
    ```bash
