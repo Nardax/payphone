@@ -33,10 +33,11 @@ the rest. A cheap USB headset for that spike is the only up-front purchase.
 ## 2. Handset audio (D5 — electret swap)
 | Item | Notes | Qty |
 |------|-------|-----|
-| USB audio adapter (mic + speaker) | **Required** — the Pi 3B has no mic and its 3.5mm jack is output-only. Provides clean sound card to Pi; supplies electret bias | 1 |
-| Electret microphone capsule | Replaces the original carbon transmitter for clean audio | 1 |
-| Coupling/attenuation parts | Resistors + capacitors to match the earpiece receiver level | as needed |
-| (Optional) original carbon mic | Keep on hand as an authenticity fallback | — |
+| USB sound card — **dual-jack** (separate mic-in + headphone-out) | **Required** — the Pi 3B has no mic and its 3.5mm jack is output-only. Get **separate 3.5mm jacks** (not a single combined TRRS) so the handset mic + earpiece wire independently. Doubles as the test-call device today. | 1 |
+| Electret microphone capsule(s) | Replaces the original carbon transmitter for clean audio; USB card supplies bias. Buy a multipack. *(D5)* | 1+ |
+| 3.5mm pigtail cables / screw-terminal breakout | Splice the handset mic + earpiece wires onto the sound card's two jacks | 2 |
+| Coupling/attenuation parts | Coupling capacitor for the mic + series resistor to tame the higher-impedance earpiece (resistor/cap assortment kit) | as needed |
+| (Optional) original carbon mic | Keep on hand as an authenticity fallback (needs a bias network) | — |
 
 ## 3. Dial + hook sensing (D6 — direct Pi GPIO, opto-isolated)
 | Item | Notes | Qty |
@@ -77,9 +78,10 @@ Buy in two phases so the risky GV bridge is proven before you spend on the rest.
 
 ### Phase 2 — buy after the bridge spike passes
 **Handset audio (D5)**
-- [ ] USB audio adapter (mic + speaker)
-- [ ] Electret microphone capsule
-- [ ] Coupling/attenuation resistors + capacitors (earpiece matching)
+- [ ] USB sound card — **dual-jack** (separate mic-in + headphone-out, not single TRRS)
+- [ ] Electret microphone capsule(s) — multipack
+- [ ] 3.5mm pigtail cables / screw-terminal breakout ×2
+- [ ] Resistor + capacitor assortment (mic coupling cap + earpiece series resistor)
 
 **Dial + hook sensing (D6)**
 - [ ] Opto-isolators (PC817 or similar) ×2–4
