@@ -240,6 +240,11 @@ flowchart TD
 - **D7 — Analog Bluetooth gateway (Cell2Jack/XLink):** ❌ **Rejected as primary.** HFP `ATD` dialing
   routes to the native carrier dialer, not Google Voice, so outbound dialing fails on a SIM-less
   phone; pulse decoding and ring power are both undocumented. Optional cheap experiment only.
+- **D8 — ATA-based FXS line (UniFi Talk / OBi / SIP):** ❌ **UniFi rejected — staying on the Pi.**
+  The UT-ATA ($99) is locked to the Talk app (not a standalone SIP ATA), Talk's service is
+  ~$9.99/mo/number, and Talk's bring-your-own-SIP option can't help because **Google Voice issues no
+  SIP trunk**. A used OBi200 + community firmware is the only $0/month FXS alternative, but it's
+  EOL (HP support ended Dec 2023; OBiTALK portal closed Oct 2024). Full numbers in **[TCO.md](./TCO.md)**.
 
 ---
 
