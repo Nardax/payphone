@@ -26,16 +26,20 @@ Start Chromium with the debug port, logged into Google Voice::
 
 Then::
 
-    python3 tools/gvcall.py probe                 # FIRST: dump the real DOM
+    python3 tools/gvcall.py probe                 # dump the real DOM
+    python3 tools/gvcall.py probe --wait 15       # ...while a call is ringing
     python3 tools/gvcall.py status
     python3 tools/gvcall.py dial 5551234567
+    python3 tools/gvcall.py dial 5551234567 --keypad   # click the on-screen keypad
+    python3 tools/gvcall.py keys 555               # press keys, don't call
     python3 tools/gvcall.py answer
     python3 tools/gvcall.py hangup
     python3 tools/gvcall.py watch                 # emit events on inbound ring
 
-``probe`` exists because the selectors in ``payphone/gv_selectors.py`` are
-unverified guesses. Run it first and fix that file — it is designed to be the
-only thing you need to edit when Google reshuffles their DOM.
+``probe`` exists because the selectors in ``payphone/gv_selectors.py`` will rot
+whenever Google reshuffles their DOM. The dial-out selectors are verified; the
+in-call ones (answer / hang up) are not, because they only exist while a call is
+live — capture them with ``probe --wait``.
 """
 
 from __future__ import annotations
@@ -123,8 +127,13 @@ def any_visible(page, candidates: List[str]) -> bool:
 # commands
 # --------------------------------------------------------------------------
 
-def cmd_probe(page, _args) -> int:
+def cmd_probe(page, args) -> int:
     """Dump every visible interactive element, to repair selectors."""
+    delay = getattr(args, "wait", 0) or 0
+    if delay:
+        print(f"waiting {delay}s before probing — trigger the call state you want "
+              f"to capture now...", file=sys.stderr)
+        time.sleep(delay)
     js = """
     () => Array.from(document.querySelectorAll('button,[role="button"],input'))
       .filter(el => el.offsetParent !== null)
@@ -158,6 +167,25 @@ def cmd_status(page, _args) -> int:
     return 0
 
 
+def _press_keypad(page, number: str) -> bool:
+    """Enter a number by clicking the on-screen keypad, digit by digit.
+
+    This mirrors how the rotary dial will actually feed digits (one at a time,
+    as each is decoded) rather than pasting a complete string, so it is the
+    strategy the finished payphone will use.
+    """
+    for ch in number:
+        key = first_visible(page, [sel.keypad_digit(ch)], timeout_ms=3000)
+        if key is None:
+            print(f"ERROR: keypad key {ch!r} not found — is the keypad hidden? "
+                  "Click 'Show keypad' in Google Voice, or drop --keypad.",
+                  file=sys.stderr)
+            return False
+        key.click()
+        time.sleep(0.12)
+    return True
+
+
 def cmd_dial(page, args) -> int:
     number = "".join(ch for ch in args.number if ch.isdigit() or ch == "+")
     if not number:
@@ -168,21 +196,26 @@ def cmd_dial(page, args) -> int:
         page.goto(sel.GV_CALLS_URL)
         page.wait_for_load_state("domcontentloaded")
 
-    box = first_visible(page, sel.NUMBER_INPUT, timeout_ms=8000)
-    if box is None:
-        print("ERROR: could not find the number input.\n"
-              "Run `gvcall.py probe` and update NUMBER_INPUT in gv_selectors.py.",
-              file=sys.stderr)
-        return 1
+    if getattr(args, "keypad", False):
+        if not _press_keypad(page, number.lstrip("+")):
+            return 1
+        box = None
+    else:
+        box = first_visible(page, sel.NUMBER_INPUT, timeout_ms=8000)
+        if box is None:
+            print("ERROR: could not find the number input.\n"
+                  "Run `gvcall.py probe` and update NUMBER_INPUT in gv_selectors.py.",
+                  file=sys.stderr)
+            return 1
 
-    box.click()
-    box.fill("")
-    box.type(number, delay=60)
+        box.click()
+        box.fill("")
+        box.type(number, delay=60)
     time.sleep(0.6)
 
     button = first_visible(page, sel.CALL_BUTTON, timeout_ms=4000)
-    if button is None:
-        # Some builds accept Enter in the search box.
+    if button is None and box is not None:
+        # Some builds accept Enter in the number box.
         box.press("Enter")
         time.sleep(1.0)
         button = first_visible(page, sel.CALL_BUTTON, timeout_ms=4000)
@@ -194,6 +227,18 @@ def cmd_dial(page, args) -> int:
 
     button.click()
     print(f"dialing {number}")
+    return 0
+
+
+def cmd_keys(page, args) -> int:
+    """Press keypad keys without placing a call (rotary-dial rehearsal)."""
+    digits = "".join(ch for ch in args.digits if ch.isdigit() or ch in "*#")
+    if not digits:
+        print("ERROR: nothing to press", file=sys.stderr)
+        return 2
+    if not _press_keypad(page, digits):
+        return 1
+    print(f"pressed {digits}")
     return 0
 
 
@@ -250,6 +295,7 @@ COMMANDS = {
     "probe": cmd_probe,
     "status": cmd_status,
     "dial": cmd_dial,
+    "keys": cmd_keys,
     "answer": cmd_answer,
     "hangup": cmd_hangup,
     "watch": cmd_watch,
@@ -263,10 +309,18 @@ def main() -> int:
                     help=f"Chromium CDP endpoint (default: {DEFAULT_CDP})")
     sub = ap.add_subparsers(dest="command", required=True)
 
-    sub.add_parser("probe", help="dump visible elements to repair selectors")
+    p_probe = sub.add_parser("probe", help="dump visible elements to repair selectors")
+    p_probe.add_argument("--wait", type=int, default=0,
+                         help="seconds to wait before dumping, so you can put the "
+                              "page into a ringing / in-call state first")
     sub.add_parser("status", help="report idle / ringing / in-call")
     p_dial = sub.add_parser("dial", help="place an outbound call")
     p_dial.add_argument("number")
+    p_dial.add_argument("--keypad", action="store_true",
+                        help="enter digits by clicking the on-screen keypad "
+                             "instead of typing into the number box")
+    p_keys = sub.add_parser("keys", help="press keypad keys without calling")
+    p_keys.add_argument("digits")
     sub.add_parser("answer", help="answer a ringing call")
     sub.add_parser("hangup", help="end the active call")
     p_watch = sub.add_parser("watch", help="stream call-state events as JSON")

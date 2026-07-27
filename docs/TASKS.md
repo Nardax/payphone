@@ -53,8 +53,14 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 
 - [ ] **sw-call-control** — Scripting GV call control (place/answer/hang up) → v2-pi-bridge
   ⚠️ **Highest-risk unknown — do this first.** Automate the Google Voice web app in Chromium: dial a
-  number, answer an inbound call, hang up, with no human clicking. Try Playwright/Puppeteer over CDP;
-  fall back to `xdotool` synthetic input. Deliverable: `gvcall dial <number> | answer | hangup`.
+  number, answer an inbound call, hang up, with no human clicking. Deliverable:
+  `gvcall dial <number> | answer | hangup`.
+  **Progress:** `tools/gvcall.py` attaches to system Chromium over CDP (Playwright has no ARM build).
+  `probe` run against a live session — **dial-out selectors verified** (number input has no
+  aria-label, matched by placeholder; call button is icon-only). Found an on-screen keypad with
+  stable aria-labels, so `--keypad` dialing clicks digits one at a time — the mode the rotary dial
+  will use. **Remaining:** confirm a scripted call actually connects, then probe during a live call
+  to capture the Answer / Hang up selectors.
   **If this can't be made to work, the V2 architecture is wrong — better to know before buying parts.**
 - [ ] **sw-incoming-detect** — Detecting inbound GV calls programmatically → v2-pi-bridge
   Detect the ringing state of an inbound call (DOM mutation, notification, or CDP event) and emit a

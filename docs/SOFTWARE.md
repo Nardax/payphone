@@ -70,19 +70,52 @@ chromium --remote-debugging-port=9222 \
 
 ### Use it
 ```bash
-python3 tools/gvcall.py probe               # ← RUN THIS FIRST
+python3 tools/gvcall.py probe               # dump the real DOM
+python3 tools/gvcall.py probe --wait 15     # ...while a call is ringing
 python3 tools/gvcall.py status              # idle | ringing | in-call
 python3 tools/gvcall.py dial 5551234567
+python3 tools/gvcall.py dial 5551234567 --keypad
+python3 tools/gvcall.py keys 555            # press keypad keys, don't call
 python3 tools/gvcall.py hangup
 python3 tools/gvcall.py answer
 python3 tools/gvcall.py watch               # streams JSON state events
 ```
 
+### Two ways to dial — and why the keypad one matters
+`probe` revealed that the GV page has a full **on-screen DTMF keypad** whose keys carry stable
+aria-labels (`'1'`, `'2' 'a' 'b' 'c'`, … `'0'`, `Star`, `Pound`).
+
+- **Default** — type the whole number into the input box, then click Call.
+- **`--keypad`** — click the keypad keys one at a time.
+
+The keypad route is the one the finished payphone will use: the rotary decoder emits digits *as
+they are dialed*, one at a time, which maps directly onto individual key clicks. It also avoids
+depending on the input box's focus/autocomplete behaviour.
+
+### Verified selectors — and one real trap
+Probed against a live signed-in session:
+
+| Element | Reality |
+|---|---|
+| Number input | **No `aria-label` at all** — must be matched by `placeholder="Enter a name or number"` |
+| Call button | Icon-only; text is the ligature `call`; `aria-label` is `"No contact selected"` until a number is entered |
+| Keypad | `aria-label` is the digit **in single quotes**, with letters appended for 2–9 |
+| Audio settings | `aria-label="Audio settings"` |
+
+⚠️ **Trap:** never select the call button with `button:has-text("Call")`. A *different* button —
+**"Call Availability settings"** — also contains that text and appears **earlier** in the DOM, so
+`.first` would silently open settings instead of dialing. `gv_selectors.py` uses exact-match
+`button:text-is("call")` and `aria-label` matching to avoid this.
+
+Still **unverified**: Answer, Hang up, and the in-call/ringing indicators — they only exist while a
+call is live. Capture them with `probe --wait 15` during a real ringing call, then update
+`gv_selectors.py`.
+
 ### Expect to fix selectors — that's by design
-Google Voice is a private, obfuscated, unstable web app. The selectors in `gv_selectors.py` are
-**unverified starting points**. `probe` dumps every visible button with its `aria-label` and text so
-you can paste the real values into that one file. Selectors prefer `aria-label`/`role` because
-Google maintains those for accessibility, so they rot far slower than class names.
+Google Voice is a private, obfuscated, unstable web app. `probe` dumps every visible button with its
+`aria-label` and text so you can paste the real values into that one file. Selectors prefer
+`aria-label`/`role` because Google maintains those for accessibility, so they rot far slower than
+class names.
 
 **This is the known structural weakness of the V2 design** (see decision D3): we drive a web UI
 Google can change without notice. Keeping all selectors in one file is the mitigation.
