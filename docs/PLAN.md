@@ -27,6 +27,7 @@ ring** on incoming calls.
 | **Real Google Voice call placed from the Pi** | ✅ **validated** (needs a USB mic — Pi 3B has none) |
 | Alternatives evaluated & rejected (**D7** Cell2Jack, **D8** UniFi Talk/ATA) | ✅ done — see [TCO.md](./TCO.md) |
 | Rotary pulse decoder + 23 unit tests | ✅ done — see [SOFTWARE.md](./SOFTWARE.md) |
+| **Decoder validated on real GPIO** (loopback, incl. `0` and contact bounce) | ✅ **validated on Pi 3B** |
 | GV call control CLI (`gvcall.py`) | 🔄 written; **selectors need verifying on the real DOM** |
 | Payphone teardown & tracing (`reverse-wiring`) | 🔄 ready to start — worksheet below |
 | Hardware purchases | ⏸️ deliberately deferred until the software risk is retired |

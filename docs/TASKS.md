@@ -59,11 +59,10 @@ Companion to [PLAN.md](./PLAN.md). Check items off as you complete them. `→` s
 - [ ] **sw-incoming-detect** — Detecting inbound GV calls programmatically → v2-pi-bridge
   Detect the ringing state of an inbound call (DOM mutation, notification, or CDP event) and emit a
   consumable event. This is what will fire the bell. Test today by calling the GV number from a mobile.
-- [ ] **sw-dial-decoder** — Building + bench-testing the rotary pulse decoder → _(none)_
-  Write the 10-pps pulse decoder with debounce; unit-test against synthetic pulse trains (realistic
-  ~39/61 make/break ratio, contact bounce, 1–10 pulses where **10 = digit 0**). Then validate on real
-  silicon with a **GPIO loopback**: jumper one GPIO output to a GPIO input, emit pulses, decode them.
-  Proves timing and debounce with **no payphone and no purchase** beyond one jumper wire.
+- [x] **sw-dial-decoder** — Building + bench-testing the rotary pulse decoder → _(none)_
+  ✅ **Done — validated on real GPIO** (loopback GPIO17→GPIO27 on the Pi 3B; clean signal, the
+  ten-pulse `0`, and injected contact bounce all decoded correctly). 23 unit tests green.
+  Decoder handles debounce, inter-digit timeout, 8–11pps drift, and **10 pulses = 0**.
 - [ ] **sw-dialplan** — Implementing digit accumulation and dial plan → sw-dial-decoder, sw-call-control
   Inter-digit timeout, end-of-number detection, 7- vs 10-digit, 1+ long distance, misdial handling.
   Feeds the assembled number to `sw-call-control`. Pure logic, unit-testable.
