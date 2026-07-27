@@ -17,6 +17,30 @@ ring** on incoming calls.
 
 ---
 
+## Current status (updated 2026-07-26)
+
+| Milestone | State |
+|-----------|-------|
+| Build version chosen (**D1 = V2, Raspberry Pi**) | ✅ done |
+| Google Voice number | ✅ done |
+| Pi online headless (flash → SSH → VNC → update) | ✅ done |
+| **Real Google Voice call placed from the Pi** | ✅ **validated** (needs a USB mic — Pi 3B has none) |
+| Alternatives evaluated & rejected (**D7** Cell2Jack, **D8** UniFi Talk/ATA) | ✅ done — see [TCO.md](./TCO.md) |
+| Rotary pulse decoder + 23 unit tests | ✅ done — see [SOFTWARE.md](./SOFTWARE.md) |
+| GV call control CLI (`gvcall.py`) | 🔄 written; **selectors need verifying on the real DOM** |
+| Payphone teardown & tracing (`reverse-wiring`) | 🔄 ready to start — worksheet below |
+| Hardware purchases | ⏸️ deliberately deferred until the software risk is retired |
+
+**Next two actions, neither requiring a purchase:**
+1. Run `python3 tools/gvcall.py probe` on the Pi and fix `src/payphone/gv_selectors.py`. This
+   retires the project's biggest remaining unknown — whether GV calling can be *scripted*, not
+   just clicked.
+2. Trace the payphone with a multimeter, recording results in
+   **[WIRING-WORKSHEET.md](./WIRING-WORKSHEET.md)**. Use `tools/gpio_probe.py` to identify the dial
+   and hook contacts — the Pi reads 10pps pulses far more reliably than a multimeter can.
+
+---
+
 ## Why Option A (and how it stays free)
 Google Voice never hands out SIP credentials, so a normal VoIP adapter (ATA) can't log into it.
 Paying for a SIP DID would fix that but adds a monthly bill. **Option A avoids SIP entirely: a

@@ -14,6 +14,7 @@ Control software for the Version 2 (Raspberry Pi) build. Companion to
 | `src/payphone/gv_selectors.py` | **Every Google Voice DOM selector**, isolated for cheap repair. |
 | `tools/gvcall.py` | Google Voice call control CLI: `probe / status / dial / answer / hangup / watch`. |
 | `tools/gpio_loopback.py` | Bench-tests the decoder on real GPIO using one jumper wire. |
+| `tools/gpio_probe.py` | Turns the Pi into a logic analyzer for tracing dial/hook contacts. |
 | `tests/` | Stdlib `unittest` — runs anywhere, no pip installs. |
 
 ## Running the tests

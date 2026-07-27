@@ -29,6 +29,13 @@ plus the handset-audio wiring. Companion to [PLAN.md](./PLAN.md), [HARDWARE.md](
 | **Tip / Ring** | The two line wires | The pair that would go to the phone jack (often red/green) |
 
 ### Tracing procedure
+> 📝 **Record your measurements in [WIRING-WORKSHEET.md](./WIRING-WORKSHEET.md)** as you go — it has
+> fill-in tables for every step below, and becomes the source of truth for all later wiring.
+>
+> 💡 A multimeter can't reliably follow a dial's 10 pulses/second. Once you've narrowed down the
+> candidate pairs, use **`tools/gpio_probe.py`** to let the Pi read them (see
+> [SOFTWARE.md](./SOFTWARE.md)) — it decodes digits live.
+
 1. **Power off / disconnect everything.** Never probe with the ring generator connected/powered.
 2. Set the multimeter to **continuity / ohms**.
 3. **Handset:** at the handset-cord terminals, find the **transmitter pair** (variable resistance,
