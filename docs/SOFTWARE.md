@@ -93,6 +93,37 @@ eventually drive the ring cadence (`sw-ring-cadence`) and then the ⚠️ ~90V r
 **Inhibit** line — so the whole inbound path can be built and tested before any high-voltage
 hardware exists.
 
+### Troubleshooting
+
+**`Missing X server or $DISPLAY` when launching Chromium over SSH.**
+Chromium needs a desktop session; an SSH shell has none. Easiest fix: run the launch command from a
+terminal **inside the VNC desktop**. You have to sign into Google Voice in that window anyway.
+
+To launch it from SSH instead, first detect the session type:
+```bash
+ls /run/user/$(id -u)/wayland-0 2>/dev/null && echo WAYLAND || echo X11
+```
+X11:
+```bash
+export DISPLAY=:0
+export XAUTHORITY=$HOME/.Xauthority
+```
+Wayland (Bookworm default on newer Pis):
+```bash
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+export WAYLAND_DISPLAY=wayland-0
+```
+…then run the `chromium --remote-debugging-port=9222 …` command. The window appears on the VNC
+desktop. Confirm the port is live with:
+```bash
+curl -s http://localhost:9222/json/version | head -3
+```
+`gvcall.py` itself can then be run over SSH — it only talks to the debug port.
+
+> ⚠️ **Don't reach for `--headless` to dodge this.** It avoids the display error but the finished
+> phone needs real WebRTC audio through the USB sound card, and Google sign-in is painful headless.
+> Keep Chromium on the real desktop; `sw-autostart` will launch it unattended later.
+
 ---
 
 ## Safety
