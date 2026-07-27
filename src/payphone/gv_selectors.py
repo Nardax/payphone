@@ -67,36 +67,53 @@ def keypad_digit(digit: int | str) -> str:
     return f"button[aria-label^=\"'{value}'\"]"
 
 
-# UNVERIFIED — no call was active during the probe, so these did not appear.
-# Re-run `gvcall.py probe` while a call is RINGING and again while CONNECTED,
-# then replace these with the observed aria-labels.
-ANSWER_BUTTON = [
-    'button[aria-label*="Answer" i]',
-    'button[aria-label*="Accept" i]',
-    '[role="button"][aria-label*="Answer" i]',
-]
-
-# UNVERIFIED — see note above.
+# VERIFIED during a live connected call. Google names in-call controls with the
+# "<verb> call" pattern: "Hang up call", "Mute call", "Hold call".
 HANGUP_BUTTON = [
+    'button[aria-label="Hang up call"]',
     'button[aria-label*="Hang up" i]',
     'button[aria-label*="End call" i]',
-    'button[aria-label*="Decline" i]',
-    '[role="button"][aria-label*="Hang up" i]',
+    'button:text-is("call_end")',
 ]
 
-# UNVERIFIED. Presence implies a call is ringing IN — this is what will
-# eventually fire the bell.
-INCOMING_CALL_INDICATOR = [
+# UNVERIFIED, but INFERRED from the verified "<verb> call" naming pattern above.
+# Only an OUTBOUND call has been probed so far; capture the real inbound labels
+# with `gvcall.py probe --wait 15` while the Pi is actually ringing.
+ANSWER_BUTTON = [
+    'button[aria-label="Answer call"]',
     'button[aria-label*="Answer" i]',
+    'button[aria-label*="Accept" i]',
+]
+
+DECLINE_BUTTON = [
+    'button[aria-label="Decline call"]',
+    'button[aria-label*="Decline" i]',
+    'button[aria-label*="Reject" i]',
+]
+
+# UNVERIFIED (inbound never probed). Presence implies a call is ringing IN —
+# this is what will eventually fire the bell.
+INCOMING_CALL_INDICATOR = ANSWER_BUTTON + [
     '[aria-label*="Incoming call" i]',
 ]
 
-# UNVERIFIED. Presence implies a call is connected.
+# VERIFIED. Presence implies a call is connected. "Hang up call" and "Mute call"
+# only exist while a call is up; the number input and Call button disappear.
 IN_CALL_INDICATOR = [
-    'button[aria-label*="Hang up" i]',
-    'button[aria-label*="End call" i]',
-    'button[aria-label*="Mute" i]',
+    'button[aria-label="Hang up call"]',
+    'button[aria-label="Mute call"]',
+    'button[aria-label="Hold call"]',
 ]
+
+# VERIFIED. Other in-call controls, kept for later use.
+MUTE_BUTTON = 'button[aria-label="Mute call"]'
+HOLD_BUTTON = 'button[aria-label="Hold call"]'
+
+# VERIFIED. IMPORTANT: during a call the keypad is COLLAPSED behind this button.
+# Any mid-call DTMF (phone trees, etc.) must click this first, then use
+# keypad_digit(). When idle the keypad is already expanded and instead shows a
+# "Hide keypad" control.
+OPEN_KEYPAD_BUTTON = 'button[aria-label="Open keypad"]'
 
 # VERIFIED. Useful later for routing call audio to the USB sound card.
 AUDIO_SETTINGS_BUTTON = 'button[aria-label="Audio settings"]'

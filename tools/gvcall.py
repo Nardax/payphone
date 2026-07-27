@@ -37,9 +37,9 @@ Then::
     python3 tools/gvcall.py watch                 # emit events on inbound ring
 
 ``probe`` exists because the selectors in ``payphone/gv_selectors.py`` will rot
-whenever Google reshuffles their DOM. The dial-out selectors are verified; the
-in-call ones (answer / hang up) are not, because they only exist while a call is
-live — capture them with ``probe --wait``.
+whenever Google reshuffles their DOM. Dial-out and in-call selectors are now
+verified against a real connected call; only the *inbound ringing* ones remain
+unverified — capture them with ``probe --wait`` while the Pi is ringing.
 """
 
 from __future__ import annotations
@@ -173,12 +173,21 @@ def _press_keypad(page, number: str) -> bool:
     This mirrors how the rotary dial will actually feed digits (one at a time,
     as each is decoded) rather than pasting a complete string, so it is the
     strategy the finished payphone will use.
+
+    During an active call the keypad is collapsed behind an "Open keypad"
+    button, so open it first if the digits aren't reachable.
     """
     for ch in number:
-        key = first_visible(page, [sel.keypad_digit(ch)], timeout_ms=3000)
+        key = first_visible(page, [sel.keypad_digit(ch)], timeout_ms=1500)
         if key is None:
-            print(f"ERROR: keypad key {ch!r} not found — is the keypad hidden? "
-                  "Click 'Show keypad' in Google Voice, or drop --keypad.",
+            opener = first_visible(page, [sel.OPEN_KEYPAD_BUTTON], timeout_ms=1000)
+            if opener is not None:
+                opener.click()
+                time.sleep(0.4)
+                key = first_visible(page, [sel.keypad_digit(ch)], timeout_ms=2000)
+        if key is None:
+            print(f"ERROR: keypad key {ch!r} not found — the keypad may be hidden. "
+                  "Click 'Open keypad' in Google Voice, or drop --keypad.",
                   file=sys.stderr)
             return False
         key.click()

@@ -47,8 +47,8 @@ Convention: **HIGH = contact closed** (loop intact), **LOW = pulse** (open).
 ---
 
 ## 2. Google Voice call control (`sw-call-control`)
-⚠️ **The project's biggest unknown.** A human can place a GV call in Chromium; this proves a
-*script* can.
+✅ **Proven.** A script can place a Google Voice call end to end — this was the project's biggest
+unknown, and the V2 architecture survives it. Only inbound *ringing* detection is still unverified.
 
 ### Why attach instead of launch
 Playwright ships **no prebuilt ARM Chromium**, so `playwright install` will not give you a working
@@ -93,23 +93,35 @@ they are dialed*, one at a time, which maps directly onto individual key clicks.
 depending on the input box's focus/autocomplete behaviour.
 
 ### Verified selectors — and one real trap
-Probed against a live signed-in session:
+Probed against a live signed-in session, both idle and during a connected call:
 
-| Element | Reality |
-|---|---|
-| Number input | **No `aria-label` at all** — must be matched by `placeholder="Enter a name or number"` |
-| Call button | Icon-only; text is the ligature `call`; `aria-label` is `"No contact selected"` until a number is entered |
-| Keypad | `aria-label` is the digit **in single quotes**, with letters appended for 2–9 |
-| Audio settings | `aria-label="Audio settings"` |
+| Element | Reality | State |
+|---|---|---|
+| Number input | **No `aria-label` at all** — matched by `placeholder="Enter a name or number"` | idle |
+| Call button | Icon-only; text is the ligature `call`; `aria-label` is `"No contact selected"` until a number is entered | idle |
+| Keypad | `aria-label` is the digit **in single quotes**, with letters appended for 2–9 | idle (expanded) |
+| Hang up | `aria-label="Hang up call"` (text `call_end`) | in-call |
+| Mute / Hold | `aria-label="Mute call"` / `"Hold call"` | in-call |
+| Open keypad | `aria-label="Open keypad"` (text `dialpad`) | in-call |
+| Audio settings | `aria-label="Audio settings"` | always |
+
+Two behaviours worth knowing:
+
+- **The number input and Call button vanish during a call**, and the in-call controls only exist
+  while a call is up. That asymmetry is what `status` uses to tell idle from in-call.
+- **The keypad collapses during a call** behind `Open keypad`. `gvcall.py` opens it automatically
+  before pressing keys, which is what mid-call DTMF (phone trees) will need.
 
 ⚠️ **Trap:** never select the call button with `button:has-text("Call")`. A *different* button —
 **"Call Availability settings"** — also contains that text and appears **earlier** in the DOM, so
 `.first` would silently open settings instead of dialing. `gv_selectors.py` uses exact-match
 `button:text-is("call")` and `aria-label` matching to avoid this.
 
-Still **unverified**: Answer, Hang up, and the in-call/ringing indicators — they only exist while a
-call is live. Capture them with `probe --wait 15` during a real ringing call, then update
-`gv_selectors.py`.
+Still **unverified**: the *inbound ringing* controls (Answer / Decline). Only an outbound call has
+been probed. Google names in-call controls `"<verb> call"` — `Hang up call`, `Mute call`,
+`Hold call` — so `gv_selectors.py` currently guesses `"Answer call"` / `"Decline call"` by that
+pattern. Confirm it by calling the GV number from a mobile and running `probe --wait 15` while the
+Pi is ringing. **This is the last thing standing between here and a working inbound bell.**
 
 ### Expect to fix selectors — that's by design
 Google Voice is a private, obfuscated, unstable web app. `probe` dumps every visible button with its

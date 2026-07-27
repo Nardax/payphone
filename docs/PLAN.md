@@ -28,14 +28,20 @@ ring** on incoming calls.
 | Alternatives evaluated & rejected (**D7** Cell2Jack, **D8** UniFi Talk/ATA) | ✅ done — see [TCO.md](./TCO.md) |
 | Rotary pulse decoder + 23 unit tests | ✅ done — see [SOFTWARE.md](./SOFTWARE.md) |
 | **Decoder validated on real GPIO** (loopback, incl. `0` and contact bounce) | ✅ **validated on Pi 3B** |
-| GV call control CLI (`gvcall.py`) | 🔄 written; **selectors need verifying on the real DOM** |
+| GV call control CLI (`gvcall.py`) | ✅ **validated — a scripted call connected** (`sw-call-control`) |
+| Inbound ring detection (`sw-incoming-detect`) | 🔄 next — Answer/Decline labels still inferred |
 | Payphone teardown & tracing (`reverse-wiring`) | 🔄 ready to start — worksheet below |
 | Hardware purchases | ⏸️ deliberately deferred until the software risk is retired |
 
+> 🎉 **The project's biggest risk is retired.** The open question was never whether a *human* could
+> place a Google Voice call — it was whether a **script** could. It can. The V2 (Raspberry Pi)
+> architecture stands.
+
 **Next two actions, neither requiring a purchase:**
-1. Run `python3 tools/gvcall.py probe` on the Pi and fix `src/payphone/gv_selectors.py`. This
-   retires the project's biggest remaining unknown — whether GV calling can be *scripted*, not
-   just clicked.
+1. Call the Google Voice number from a mobile and run `python3 tools/gvcall.py probe --wait 15`
+   while the Pi is ringing. The inbound Answer/Decline selectors are currently *inferred* from
+   Google's verified `"<verb> call"` naming pattern, not observed. This is the last software
+   unknown, and it's the trigger that will fire the bell.
 2. Trace the payphone with a multimeter, recording results in
    **[WIRING-WORKSHEET.md](./WIRING-WORKSHEET.md)**. Use `tools/gpio_probe.py` to identify the dial
    and hook contacts — the Pi reads 10pps pulses far more reliably than a multimeter can.
